@@ -10,6 +10,7 @@ interface ModelSummary {
     name: string;
     image: string;
     maxPrice: number;
+    displayPrice: string;
 }
 
 export async function GET(request: NextRequest) {
@@ -46,6 +47,7 @@ export async function GET(request: NextRequest) {
                 id: name,
                 name: name,
                 maxPrice: maxPrice,
+                displayPrice: maxPrice.toLocaleString('id-ID'),
                 image: fullImageUrl,
             };
         });

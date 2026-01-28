@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Laku Backend (Headless)
 
-## Getting Started
+This is a **Headless Backend** service built with Next.js, designed to power frontend applications (like Framer, Webflow, or custom React apps) for the Laku device buyback platform.
 
-First, run the development server:
+It provides API endpoints to:
+1.  Fetch available phone models and prices.
+2.  Calculate estimated trade-in values based on device condition.
+3.  Submit customer leads to Google Sheets and N8N workflows.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Technology Stack
+- **Framework**: Next.js (App Router)
+- **Database (Pricing & Leads)**: Google Sheets (via Service Account)
+- **Workflow Automation**: N8N (Webhooks)
+- **Deployment**: Vercel
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## API Reference
+This backend exposes public REST APIs. See [API_DOCS.md](./API_DOCS.md) for full documentation on how to use them in your frontend.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Quick Endpoints Summary
+- `GET /api/models`: List all phone models.
+- `GET /api/storage?model=iPhone 13`: List storage options.
+- `POST /api/quote`: Calculate price based on condition.
+- `POST /api/lead`: Submit a new trade-in request.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Local Development
 
-## Learn More
+1.  **Clone the repo**
+    ```bash
+    git clone https://github.com/mybyteindonesia/laku-backend-headless.git
+    cd laku-backend-headless
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+2.  **Install Dependencies**
+    ```bash
+    npm install
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3.  **Setup Environment Variables**
+    Create a `.env.local` file (see `SetupGuide.MD`) with your Google Cloud credentials.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4.  **Run Server**
+    ```bash
+    npm run dev
+    ```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## deployment
+Deploy to **Vercel** for best performance. Ensure all environment variables are properly configured in Vercel Project Settings.

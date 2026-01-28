@@ -1,5 +1,5 @@
 
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { getPricingData, PricingRow } from '@/lib/googleSheets';
 import { FALLBACK_PRICING, MODEL_IMAGE_MAP } from '@/lib/constants';
 
@@ -12,7 +12,7 @@ interface ModelSummary {
     maxPrice: number;
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
     try {
         let pricingData: PricingRow[];
         try {
@@ -32,13 +32,21 @@ export async function GET() {
             }
         });
 
+        // Construct Base URL
+        const host = request.headers.get('host') || 'localhost:3000';
+        const protocol = host.includes('localhost') ? 'http' : 'https';
+        const baseUrl = `${protocol}://${host}`;
+
         // Convert to ModelSummary array
         const models: ModelSummary[] = Array.from(modelMap.entries()).map(([name, maxPrice]) => {
+            const imagePath = MODEL_IMAGE_MAP[name.trim()] || MODEL_IMAGE_MAP['iPhone 12'] || '';
+            const fullImageUrl = imagePath ? `${baseUrl}${imagePath}` : '';
+
             return {
                 id: name,
                 name: name,
                 maxPrice: maxPrice,
-                image: MODEL_IMAGE_MAP[name.trim()] || MODEL_IMAGE_MAP['iPhone 12'] || '', // Fallback image
+                image: fullImageUrl,
             };
         });
 
